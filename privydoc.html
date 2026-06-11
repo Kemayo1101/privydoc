@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PRIVYDOC — Partage Intelligent & Sécurisé de Documents</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 <style>
 :root{--bg:#050810;--surface:#0c1120;--surface2:#111827;--border:rgba(255,255,255,0.06);--accent:#3B82F6;--accent2:#06B6D4;--accent3:#8B5CF6;--text:#F0F4FF;--muted:#8899BB;--danger:#EF4444;--success:#10B981;--gold:#F59E0B}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,8,16,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--text)}
 .logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent3));border-radius:8px;display:flex;align-items:center;justify-content:center}
@@ -21,7 +21,6 @@ nav ul a:hover{color:var(--text)}
 .nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white!important;padding:.5rem 1.2rem;border-radius:8px;font-weight:500!important}
 .hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px}
 .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px}
-/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
 .hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pulse 6s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
@@ -36,7 +35,6 @@ h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--acce
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(59,130,246,.5)}
 .btn-sec{background:transparent;color:var(--text);padding:.85rem 2rem;border-radius:10px;font-weight:400;font-size:1rem;border:1px solid var(--border);display:inline-flex;align-items:center;gap:.5rem;transition:all .3s;text-decoration:none;cursor:pointer;font-family:inherit}
 .btn-sec:hover{background:var(--surface)}
-/* CARDS */
 section{padding:5rem 2rem}
 .container{max-width:1100px;margin:0 auto}
 .slabel{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);font-weight:500;margin-bottom:.75rem}
@@ -50,7 +48,6 @@ section{padding:5rem 2rem}
 .ci-blue{background:rgba(59,130,246,.15)}.ci-purple{background:rgba(139,92,246,.15)}.ci-cyan{background:rgba(6,182,212,.15)}.ci-green{background:rgba(16,185,129,.15)}.ci-gold{background:rgba(245,158,11,.15)}.ci-red{background:rgba(239,68,68,.15)}
 .card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
 .card-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
-/* PRICING */
 .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
 .pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;transition:all .3s;display:flex;flex-direction:column}
 .pricing-card.featured{border-color:rgba(59,130,246,.4);background:linear-gradient(145deg,rgba(59,130,246,.05),var(--surface));box-shadow:0 0 60px rgba(59,130,246,.1)}
@@ -64,7 +61,6 @@ section{padding:5rem 2rem}
 .plan-feat{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--muted)}
 .plan-feat.ok{color:var(--text)}
 .ck{color:var(--success)}.cx{color:rgba(255,255,255,.2)}
-/* BTNS PAIEMENT */
 .pay-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.9rem;border-radius:10px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .3s}
 .pay-btn:disabled{opacity:.6;cursor:not-allowed}
 .pay-btn:active:not(:disabled){transform:scale(.98)}
@@ -74,13 +70,13 @@ section{padding:5rem 2rem}
 .pb-micro:hover:not(:disabled){box-shadow:0 0 35px rgba(6,182,212,.5);transform:translateY(-2px)}
 .pb-premium{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white;box-shadow:0 0 20px rgba(59,130,246,.3)}
 .pb-premium:hover:not(:disabled){box-shadow:0 0 35px rgba(59,130,246,.5);transform:translateY(-2px)}
-/* PAYMENT METHODS */
+.pb-google{background:white;color:#1f2937;font-weight:600}
+.pb-google:hover:not(:disabled){background:#f3f4f6;transform:translateY(-2px)}
 .pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0}
 .pm-opt{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:.6rem;cursor:pointer;transition:all .2s;text-align:center;font-size:.8rem;color:var(--muted)}
 .pm-opt:hover{border-color:rgba(59,130,246,.4);color:var(--text)}
 .pm-opt.sel{border-color:var(--accent);background:rgba(59,130,246,.08);color:var(--text)}
 .pm-opt .pm-ic{font-size:1.1rem;display:block;margin-bottom:.2rem}
-/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:460px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
@@ -94,16 +90,13 @@ section{padding:5rem 2rem}
 .fg input:focus,.fg select:focus{border-color:var(--accent)}
 .err-box{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--danger);padding:.6rem .9rem;border-radius:8px;font-size:.82rem;margin-bottom:1rem}
 .form-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:.75rem}
-/* SPINNER */
 .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* PAYMENT MODAL */
 .pay-modal-hdr{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
 .pay-plan-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
 .pay-amount{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800}
 .pay-amount span{font-size:.9rem;font-weight:400;color:var(--muted)}
 .secure-note{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.75rem;color:var(--muted);margin-top:.75rem}
-/* DASHBOARD */
 #dashPage{display:none;position:fixed;inset:0;background:var(--bg);z-index:300;overflow-y:auto}
 .dash-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .dash-content{max-width:1100px;margin:0 auto;padding:2rem}
@@ -120,7 +113,6 @@ section{padding:5rem 2rem}
 .dash-sec-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
 .dash-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
 .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
-/* UPLOAD ZONE */
 .upload-zone{border:2px dashed var(--border);border-radius:10px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem;position:relative}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(59,130,246,.03)}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
@@ -133,7 +125,6 @@ section{padding:5rem 2rem}
 .dba{padding:.2rem .55rem;border-radius:5px;font-size:.7rem;border:none;cursor:pointer;font-family:inherit}
 .dba-links{background:rgba(59,130,246,.15);color:var(--accent)}
 .dba-del{background:rgba(239,68,68,.15);color:var(--danger)}
-/* LIENS */
 .link-item{background:var(--surface2);border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem;border:1px solid var(--border)}
 .link-url{font-family:monospace;font-size:.78rem;color:var(--accent2);margin-bottom:.3rem;word-break:break-all}
 .link-meta{font-size:.72rem;color:var(--muted)}
@@ -141,25 +132,20 @@ section{padding:5rem 2rem}
 .lba{padding:.2rem .55rem;border-radius:5px;font-size:.7rem;border:none;cursor:pointer;font-family:inherit}
 .lba-copy{background:rgba(6,182,212,.15);color:var(--accent2)}
 .lba-rev{background:rgba(239,68,68,.15);color:var(--danger)}
-/* LINK GEN MODAL */
 .link-gen-form{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-top:1rem}
-/* PLAN BANNER */
 .plan-banner{background:linear-gradient(135deg,rgba(59,130,246,.07),rgba(139,92,246,.05));border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
-/* ACTIVITY */
 .act-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:var(--surface2);border-radius:8px;font-size:.8rem;margin-bottom:.4rem;border:1px solid var(--border)}
 .av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:white;flex-shrink:0}
 .av-b{background:var(--accent)}.av-p{background:var(--accent3)}.av-c{background:var(--accent2)}
 .abadge{font-size:.7rem;padding:.15rem .5rem;border-radius:100px}
 .ab-ok{background:rgba(16,185,129,.15);color:var(--success)}
 .ab-warn{background:rgba(245,158,11,.15);color:var(--gold)}
-/* SUCCESS/FAILED PAGES */
 .result-page{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem}
 .result-page.show{display:flex}
 .result-icon{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem}
 .ri-ok{background:rgba(16,185,129,.15);border:2px solid var(--success);animation:scIn .5s ease}
 .ri-fail{background:rgba(239,68,68,.15);border:2px solid var(--danger)}
 @keyframes scIn{from{transform:scale(0)}to{transform:scale(1)}}
-/* MISC */
 .chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
 .chip{padding:.35rem .85rem;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-size:.8rem;color:var(--muted)}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
@@ -173,8 +159,8 @@ section{padding:5rem 2rem}
 <div class="result-page" id="successPage">
   <div class="result-icon ri-ok">✅</div>
   <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.75rem">Paiement réussi !</h2>
-  <p style="color:var(--muted);max-width:400px;margin:0 auto 2rem">Votre accès PRIVYDOC a été activé. Reconnectez-vous pour profiter de votre plan.</p>
-  <button class="btn-primary" onclick="document.getElementById('successPage').classList.remove('show');openModal('loginModal')">🔐 Se connecter</button>
+  <p style="color:var(--muted);max-width:400px;margin:0 auto 2rem">Votre accès PRIVYDOC a été activé. Bonne utilisation !</p>
+  <button class="btn-primary" onclick="document.getElementById('successPage').classList.remove('show');if(currentUser)openDashboard()">📋 Accéder à mon espace</button>
 </div>
 
 <!-- FAILED PAGE -->
@@ -209,7 +195,6 @@ section{padding:5rem 2rem}
     <button class="btn-primary" onclick="openModal('signupModal')">🚀 Essai Gratuit — 2 Documents</button>
     <a href="#features" class="btn-sec">Voir les fonctionnalités →</a>
   </div>
-  <!-- Demo card -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:480px;width:100%;margin:3rem auto 0;text-align:left;box-shadow:0 40px 80px rgba(0,0,0,.5)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)">
       <div style="display:flex;align-items:center;gap:.75rem">
@@ -233,7 +218,6 @@ section{padding:5rem 2rem}
       <span style="color:var(--gold)">🔏 Watermark actif</span>
     </div>
   </div>
-  <!-- Stats -->
   <div style="display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;margin-top:4rem">
     <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">50+</div><div style="font-size:.78rem;color:var(--muted)">Pays couverts</div></div>
     <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">AES-256</div><div style="font-size:.78rem;color:var(--muted)">Chiffrement</div></div>
@@ -267,7 +251,7 @@ section{padding:5rem 2rem}
       <div>
         <div style="display:flex;flex-direction:column;gap:1.2rem">
           <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🛡️</div><div><div style="font-weight:500;margin-bottom:.2rem">Chiffrement AES-256</div><div style="font-size:.82rem;color:var(--muted)">Standard militaire. Vos fichiers réels ne sont jamais accessibles directement.</div></div></div>
-          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🔑</div><div><div style="font-weight:500;margin-bottom:.2rem">Authentification Renforcée</div><div style="font-size:.82rem;color:var(--muted)">JWT sécurisé, sessions chiffrées, vérification à chaque ouverture.</div></div></div>
+          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🔑</div><div><div style="font-weight:500;margin-bottom:.2rem">Authentification Auth0</div><div style="font-size:.82rem;color:var(--muted)">Connexion Google ou email sécurisée par Auth0, leader mondial de l'identité.</div></div></div>
           <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">⚡</div><div><div style="font-weight:500;margin-bottom:.2rem">Révocation Instantanée</div><div style="font-size:.82rem;color:var(--muted)">Bloquez un lien ou toutes les sessions en 1 clic. Effet immédiat.</div></div></div>
           <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🌐</div><div><div style="font-weight:500;margin-bottom:.2rem">CDN Mondial Cloudflare</div><div style="font-size:.82rem;color:var(--muted)">Infrastructure mondiale pour une disponibilité et vitesse optimales.</div></div></div>
         </div>
@@ -292,7 +276,7 @@ section{padding:5rem 2rem}
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem">
             <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--success);border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.05)">✓ AES-256</div>
-            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--accent);border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.05)">✓ JWT</div>
+            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--accent);border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.05)">✓ Auth0</div>
             <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:#A78BFA;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.05)">✓ WebCrypto</div>
             <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--danger);border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.05)">✓ Anti-extract</div>
           </div>
@@ -326,7 +310,6 @@ section{padding:5rem 2rem}
     <h2 class="stitle">Formules adaptées<br>à chaque besoin</h2>
     <p class="ssub">Commencez gratuitement. Paiements sécurisés via GeniusPay — Wave, Orange Money, MTN, cartes bancaires.</p>
     <div class="pricing-grid">
-      <!-- FREE -->
       <div class="pricing-card reveal">
         <div class="plan-name">Essai Gratuit</div>
         <div class="plan-price"><span>0</span><span class="cur">FCFA</span></div>
@@ -341,7 +324,6 @@ section{padding:5rem 2rem}
         </div>
         <button class="pay-btn pb-free" onclick="openModal('signupModal')">Commencer — Gratuit</button>
       </div>
-      <!-- MICRO -->
       <div class="pricing-card reveal">
         <div class="plan-name">Formule Petit Coût</div>
         <div class="plan-price"><span>200</span><span class="cur">FCFA</span><span class="per">/ 2 jours</span></div>
@@ -359,7 +341,6 @@ section{padding:5rem 2rem}
           <span id="microTxt">💳 Payer 200 FCFA</span>
         </button>
       </div>
-      <!-- PREMIUM -->
       <div class="pricing-card featured reveal">
         <div class="popular-tag">⭐ Le plus populaire</div>
         <div class="plan-name">Premium</div>
@@ -381,7 +362,6 @@ section{padding:5rem 2rem}
         </button>
       </div>
     </div>
-    <!-- Payment methods -->
     <div style="margin-top:2rem;text-align:center">
       <div class="slabel" style="margin-bottom:.75rem">Moyens de paiement acceptés</div>
       <div class="chip-grid" style="justify-content:center">
@@ -468,58 +448,43 @@ section{padding:5rem 2rem}
   </div>
   <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--muted)">
     <span>© 2025 PRIVYDOC. Tous droits réservés.</span>
-    <span>🔒 Paiements sécurisés par GeniusPay</span>
+    <span>🔒 Paiements sécurisés par GeniusPay · Identité par Auth0</span>
   </div>
 </footer>
 
 <!-- ═══════════════════════════════════════
-     MODALS
+     MODALS — AUTH VIA AUTH0
 ═══════════════════════════════════════ -->
 
-<!-- INSCRIPTION -->
+<!-- INSCRIPTION (Auth0) -->
 <div class="modal-overlay" id="signupModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
     <h3>Créer mon compte</h3>
     <p class="modal-sub">2 documents gratuits · Sans carte bancaire</p>
-    <div class="err-box" id="signupErr"></div>
-    <div class="fg"><label>Nom complet *</label><input type="text" id="sName" placeholder="Kouassi Yao"></div>
-    <div class="fg"><label>Email *</label><input type="email" id="sEmail" placeholder="vous@exemple.com"></div>
-    <div class="fg"><label>Mot de passe * <span style="color:var(--muted);font-size:.72rem">(min. 8 caractères)</span></label><input type="password" id="sPass" placeholder="Minimum 8 caractères"></div>
-    <div class="fg"><label>Confirmer mot de passe *</label><input type="password" id="sPass2" placeholder="Répétez votre mot de passe"></div>
-    <div class="fg"><label>Vous êtes *</label>
-      <select id="sRole">
-        <option value="">-- Choisissez votre profil --</option>
-        <option value="teacher">Professeur / Enseignant</option>
-        <option value="school">École / Université</option>
-        <option value="training">Centre de formation</option>
-        <option value="coach">Coach / Consultant</option>
-        <option value="company">Entreprise</option>
-        <option value="author">Auteur / Créateur</option>
-      </select>
-    </div>
-    <button class="pay-btn pb-premium" id="signupBtn" onclick="handleSignup()">
-      <span class="spinner" id="signupSpin"></span>
-      <span id="signupTxt">🚀 Créer mon compte gratuit</span>
+    <button class="pay-btn pb-google" style="margin-bottom:.75rem" onclick="loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.49 12c0-.73.13-1.44.35-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.78.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.61 0 3.06.55 4.21 1.64l3.16-3.16A11 11 0 0 0 12 1 11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+      Continuer avec Google
     </button>
-    <p class="form-note">Déjà un compte ? <a href="#" onclick="closeModal('signupModal');openModal('loginModal')" style="color:var(--accent)">Se connecter</a></p>
+    <button class="pay-btn pb-premium" onclick="signupWithEmail()">📧 S'inscrire avec mon email</button>
+    <p class="form-note">Déjà un compte ? <a href="#" onclick="closeModal('signupModal');openModal('loginModal');return false" style="color:var(--accent)">Se connecter</a></p>
+    <p class="form-note" style="margin-top:.4rem;color:var(--muted)">🔒 Identité sécurisée par Auth0</p>
   </div>
 </div>
 
-<!-- CONNEXION -->
+<!-- CONNEXION (Auth0) -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
     <h3>Se connecter</h3>
     <p class="modal-sub">Accédez à votre espace PRIVYDOC</p>
-    <div class="err-box" id="loginErr"></div>
-    <div class="fg"><label>Email *</label><input type="email" id="lEmail" placeholder="vous@exemple.com"></div>
-    <div class="fg"><label>Mot de passe *</label><input type="password" id="lPass" placeholder="Votre mot de passe"></div>
-    <button class="pay-btn pb-premium" id="loginBtn" onclick="handleLogin()">
-      <span class="spinner" id="loginSpin"></span>
-      <span id="loginTxt">🔐 Se connecter</span>
+    <button class="pay-btn pb-google" style="margin-bottom:.75rem" onclick="loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.49 12c0-.73.13-1.44.35-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.78.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.61 0 3.06.55 4.21 1.64l3.16-3.16A11 11 0 0 0 12 1 11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+      Continuer avec Google
     </button>
-    <p class="form-note">Pas de compte ? <a href="#" onclick="closeModal('loginModal');openModal('signupModal')" style="color:var(--accent)">Créer un compte gratuit</a></p>
+    <button class="pay-btn pb-premium" onclick="loginWithEmail()">🔐 Se connecter avec mon email</button>
+    <p class="form-note">Pas de compte ? <a href="#" onclick="closeModal('loginModal');openModal('signupModal');return false" style="color:var(--accent)">Créer un compte gratuit</a></p>
+    <p class="form-note" style="margin-top:.4rem;color:var(--muted)">🔒 Identité sécurisée par Auth0</p>
   </div>
 </div>
 
@@ -536,16 +501,13 @@ section{padding:5rem 2rem}
       </div>
     </div>
     <div class="err-box" id="payErr"></div>
-    <div class="fg"><label>Prénom *</label><input type="text" id="pFirst" placeholder="Kouassi"></div>
-    <div class="fg"><label>Nom *</label><input type="text" id="pLast" placeholder="Yao"></div>
-    <div class="fg"><label>Email *</label><input type="email" id="pEmail" placeholder="vous@exemple.com"></div>
-    <div class="fg"><label>Téléphone <span style="color:var(--muted);font-size:.72rem">(optionnel)</span></label><input type="tel" id="pPhone" placeholder="+225 07 00 00 00 00"></div>
-    <div style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem;font-weight:500">Moyen de paiement préféré</div>
+    <div style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Compte : <strong id="payUserEmail" style="color:var(--text)">—</strong></div>
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem;font-weight:500">Moyens de paiement disponibles sur la page GeniusPay</div>
     <div class="pm-grid">
-      <div class="pm-opt sel" onclick="selPM(this,'wave')"><span class="pm-ic">🌊</span>Wave</div>
-      <div class="pm-opt" onclick="selPM(this,'orange_money')"><span class="pm-ic">🟠</span>Orange Money</div>
-      <div class="pm-opt" onclick="selPM(this,'mtn_money')"><span class="pm-ic">🟡</span>MTN MoMo</div>
-      <div class="pm-opt" onclick="selPM(this,'moov_money')"><span class="pm-ic">🔵</span>Moov Money</div>
+      <div class="pm-opt sel"><span class="pm-ic">🌊</span>Wave</div>
+      <div class="pm-opt sel"><span class="pm-ic">🟠</span>Orange Money</div>
+      <div class="pm-opt sel"><span class="pm-ic">🟡</span>MTN MoMo</div>
+      <div class="pm-opt sel"><span class="pm-ic">💳</span>Visa / Mastercard</div>
     </div>
     <button class="pay-btn pb-premium" id="payNowBtn" onclick="initiatePayment()">
       <span class="spinner" id="payNowSpin"></span>
@@ -591,7 +553,6 @@ section{padding:5rem 2rem}
     </div>
   </div>
   <div class="dash-content">
-    <!-- Tabs -->
     <div class="dash-tabs">
       <button class="dash-tab active" onclick="switchTab('overview')">📊 Vue d'ensemble</button>
       <button class="dash-tab" onclick="switchTab('docs')">📄 Mes Documents</button>
@@ -599,7 +560,6 @@ section{padding:5rem 2rem}
       <button class="dash-tab" onclick="switchTab('upgrade')">⭐ Upgrade</button>
     </div>
 
-    <!-- OVERVIEW -->
     <div class="dash-panel active" id="tab-overview">
       <div class="plan-banner">
         <div>
@@ -620,7 +580,6 @@ section{padding:5rem 2rem}
       </div>
     </div>
 
-    <!-- DOCUMENTS -->
     <div class="dash-panel" id="tab-docs">
       <div class="dash-sec-title">📤 Uploader un Document</div>
       <div class="upload-zone" id="uploadZone">
@@ -639,13 +598,11 @@ section{padding:5rem 2rem}
       <div id="docsList"><div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun document. Uploadez votre premier fichier.</div></div>
     </div>
 
-    <!-- LIENS -->
     <div class="dash-panel" id="tab-links">
       <div class="dash-sec-title">🔗 Liens Privés Actifs</div>
       <div id="linksList"><div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun lien. Uploadez un document et générez des liens d'accès.</div></div>
     </div>
 
-    <!-- UPGRADE -->
     <div class="dash-panel" id="tab-upgrade">
       <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:1.5rem">⭐ Passez au niveau supérieur</h2>
       <div class="pricing-grid">
@@ -681,12 +638,18 @@ section{padding:5rem 2rem}
 
 <script>
 // ══════════════════════════════════════
+// CONFIGURATION AUTH0 (valeurs publiques — pas de secret ici)
+// ══════════════════════════════════════
+const AUTH0_DOMAIN    = 'dev-qhluv8jiqjpoizjr.us.auth0.com';
+const AUTH0_CLIENT_ID = 'ydVr3ZUkpjvdq8yDwyxs4KK4GisbM5X8';
+const AUTH0_AUDIENCE  = 'https://api.privydoc.com';
+
+// ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
+let auth0Client = null;
 let currentUser = null;
-let authToken   = null;
 let currentPlan = 'micro';
-let selectedPM  = 'wave';
 let allDocs     = [];
 let allLinks    = [];
 
@@ -696,85 +659,78 @@ const PLANS = {
 };
 
 // ══════════════════════════════════════
-// API HELPER
+// API HELPER — token Auth0 attaché automatiquement
 // ══════════════════════════════════════
+async function getToken() {
+  if (!auth0Client || !(await auth0Client.isAuthenticated())) return null;
+  try { return await auth0Client.getTokenSilently(); } catch(e) { return null; }
+}
+
 async function api(method, endpoint, body, useAuth = true) {
   const headers = { 'Content-Type': 'application/json' };
-  if (useAuth && authToken) headers['Authorization'] = 'Bearer ' + authToken;
+  if (useAuth) {
+    const token = await getToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+  }
   const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
-  const res  = await fetch(endpoint, opts);
+  const res = await fetch(endpoint, opts);
   return await res.json();
 }
 
 // ══════════════════════════════════════
-// AUTH — INSCRIPTION
+// AUTH0 — INITIALISATION
 // ══════════════════════════════════════
-async function handleSignup() {
-  const name = document.getElementById('sName').value.trim();
-  const email = document.getElementById('sEmail').value.trim();
-  const pass  = document.getElementById('sPass').value;
-  const pass2 = document.getElementById('sPass2').value;
-  const role  = document.getElementById('sRole').value;
-  const errEl = document.getElementById('signupErr');
-  errEl.style.display = 'none';
+async function initAuth0() {
+  auth0Client = await auth0.createAuth0Client({
+    domain: AUTH0_DOMAIN,
+    clientId: AUTH0_CLIENT_ID,
+    cacheLocation: 'localstorage',
+    authorizationParams: {
+      redirect_uri: window.location.origin,
+      audience: AUTH0_AUDIENCE,
+    },
+  });
 
-  if (!name||!email||!pass||!pass2||!role) return showErr(errEl,'Veuillez remplir tous les champs.');
-  if (!email.includes('@')) return showErr(errEl,'Email invalide.');
-  if (pass.length < 8) return showErr(errEl,'Mot de passe trop court (min. 8 caractères).');
-  if (pass !== pass2) return showErr(errEl,'Les mots de passe ne correspondent pas.');
+  // Retour de redirection après login Auth0
+  if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+    try { await auth0Client.handleRedirectCallback(); }
+    catch(e) { console.error('Callback Auth0:', e); }
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 
-  setLoading('signupBtn','signupSpin','signupTxt',true,'Création...');
-  try {
-    const data = await api('POST','/api/auth/signup',{ name, email, password: pass, role }, false);
-    if (data.success) {
-      authToken   = data.token;
-      currentUser = data.user;
-      localStorage.setItem('privydoc_token', authToken);
-      closeModal('signupModal');
-      openDashboard();
-    } else {
-      showErr(errEl, data.error || 'Erreur inscription');
-    }
-  } catch(e) { showErr(errEl,'Erreur réseau: ' + e.message); }
-  setLoading('signupBtn','signupSpin','signupTxt',false,'🚀 Créer mon compte gratuit');
+  if (await auth0Client.isAuthenticated()) {
+    const profile = await auth0Client.getUser();
+    currentUser = { name: profile.name || profile.email, email: profile.email, plan: 'free' };
+    // Synchroniser/créer le profil PRIVYDOC côté backend
+    try {
+      const data = await api('GET','/api/auth/me');
+      if (data.success && data.user) currentUser = { ...currentUser, ...data.user, name: currentUser.name };
+    } catch(e) { console.error('Profil:', e); }
+    updateNavForAuth(true);
+
+    // Reprendre un paiement interrompu par la connexion
+    const pending = sessionStorage.getItem('pd_pending_plan');
+    if (pending) { sessionStorage.removeItem('pd_pending_plan'); openPaymentModal(pending); }
+  }
 }
 
 // ══════════════════════════════════════
-// AUTH — CONNEXION
+// AUTH0 — ACTIONS (Universal Login)
 // ══════════════════════════════════════
-async function handleLogin() {
-  const email = document.getElementById('lEmail').value.trim();
-  const pass  = document.getElementById('lPass').value;
-  const errEl = document.getElementById('loginErr');
-  errEl.style.display = 'none';
-
-  if (!email||!pass) return showErr(errEl,'Email et mot de passe requis.');
-
-  setLoading('loginBtn','loginSpin','loginTxt',true,'Connexion...');
-  try {
-    const data = await api('POST','/api/auth/login',{ email, password: pass }, false);
-    if (data.success) {
-      authToken   = data.token;
-      currentUser = data.user;
-      localStorage.setItem('privydoc_token', authToken);
-      closeModal('loginModal');
-      openDashboard();
-    } else {
-      showErr(errEl, data.error || 'Identifiants incorrects');
-    }
-  } catch(e) { showErr(errEl,'Erreur réseau: ' + e.message); }
-  setLoading('loginBtn','loginSpin','loginTxt',false,'🔐 Se connecter');
+function loginWithGoogle() {
+  auth0Client.loginWithRedirect({ authorizationParams: { connection: 'google-oauth2' } });
 }
-
-function handleLogout() {
-  authToken   = null;
-  currentUser = null;
-  allDocs     = [];
-  allLinks    = [];
-  localStorage.removeItem('privydoc_token');
+function loginWithEmail() {
+  auth0Client.loginWithRedirect();
+}
+function signupWithEmail() {
+  auth0Client.loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
+}
+async function handleLogout() {
+  currentUser = null; allDocs = []; allLinks = [];
   closeDash();
-  updateNavForAuth(false);
+  await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
 }
 
 // ══════════════════════════════════════
@@ -782,7 +738,7 @@ function handleLogout() {
 // ══════════════════════════════════════
 function openDashboard() {
   if (!currentUser) return;
-  document.getElementById('dashName').textContent = currentUser.name;
+  document.getElementById('dashName').textContent = currentUser.name || currentUser.email;
   const planLabels = { free:'Essai Gratuit', micro:'Petit Coût', premium:'Premium' };
   const planColors = { free:'var(--success)', micro:'var(--accent2)', premium:'var(--gold)' };
   document.getElementById('dashPlanBadge').textContent = planLabels[currentUser.plan] || 'Gratuit';
@@ -817,11 +773,11 @@ function switchTab(tab) {
 function updateNavForAuth(loggedIn) {
   const loginBtn  = document.getElementById('navLoginBtn');
   const signupBtn = document.getElementById('navSignupBtn');
-  if (loggedIn) {
+  if (loggedIn && currentUser) {
     loginBtn.textContent  = '📋 Dashboard';
     loginBtn.onclick = () => { openDashboard(); return false; };
-    signupBtn.textContent = '👤 ' + currentUser.name;
-    signupBtn.onclick = () => false;
+    signupBtn.textContent = '👤 ' + (currentUser.name || currentUser.email);
+    signupBtn.onclick = () => { openDashboard(); return false; };
   } else {
     loginBtn.textContent  = 'Connexion';
     loginBtn.onclick = () => { openModal('loginModal'); return false; };
@@ -842,7 +798,6 @@ async function loadStats() {
       document.getElementById('kLinks').textContent = s.activeLinks;
       document.getElementById('kViews').textContent = s.totalViews;
       document.getElementById('kSusp').textContent  = s.suspicious;
-      // Activité récente
       const actEl = document.getElementById('activityList');
       if (data.recentActivity.length === 0) {
         actEl.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucune activité récente.</div>';
@@ -867,10 +822,7 @@ async function loadStats() {
 async function loadDocs() {
   try {
     const data = await api('GET','/api/documents');
-    if (data.success) {
-      allDocs = data.documents;
-      renderDocs();
-    }
+    if (data.success) { allDocs = data.documents; renderDocs(); }
   } catch(e) { console.error('Docs error:', e); }
 }
 
@@ -897,7 +849,8 @@ function renderDocs() {
 }
 
 async function handleFileUpload(input) {
-  if (!authToken) { alert('Connectez-vous pour uploader un document.'); return; }
+  const token = await getToken();
+  if (!token) { alert('Connectez-vous pour uploader un document.'); input.value=''; openModal('loginModal'); return; }
   const file = input.files[0];
   if (!file) return;
 
@@ -913,11 +866,11 @@ async function handleFileUpload(input) {
 
   try {
     barEl.style.width  = '40%';
-    statEl.textContent = 'Upload vers Cloudinary...';
+    statEl.textContent = 'Upload sécurisé...';
 
     const res = await fetch('/api/documents/upload', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + authToken },
+      headers: { 'Authorization': 'Bearer ' + token },
       body: formData,
     });
 
@@ -954,9 +907,7 @@ async function deleteDoc(docId) {
   const data = await api('DELETE', '/api/documents/' + docId);
   if (data.success) {
     allDocs = allDocs.filter(d => d.id !== docId);
-    renderDocs();
-    loadStats();
-    loadLinks();
+    renderDocs(); loadStats(); loadLinks();
   } else { alert('Erreur: ' + data.error); }
 }
 
@@ -965,7 +916,6 @@ async function deleteDoc(docId) {
 // ══════════════════════════════════════
 async function loadLinks() {
   try {
-    // Charger les liens de tous les docs
     allLinks = [];
     for (const doc of allDocs) {
       const data = await api('GET', '/api/links/doc/' + doc.id);
@@ -1019,9 +969,7 @@ async function generateLink() {
       allLinks.push(data.link);
       closeModal('genLinkModal');
       switchTab('links');
-      renderLinks();
-      loadStats();
-      // Copier automatiquement
+      renderLinks(); loadStats();
       copyLink(data.link.url);
       alert('✅ Lien généré et copié !\n' + data.link.url);
     } else { showErr(errEl, data.error || 'Erreur'); }
@@ -1034,8 +982,7 @@ async function revokeLink(linkId) {
   const data = await api('DELETE', '/api/links/' + linkId);
   if (data.success) {
     allLinks = allLinks.map(l => l.id === linkId ? {...l, active: false} : l);
-    renderLinks();
-    loadStats();
+    renderLinks(); loadStats();
   } else { alert('Erreur: ' + data.error); }
 }
 
@@ -1049,9 +996,9 @@ function copyLink(url) {
 }
 
 // ══════════════════════════════════════
-// PAIEMENT
+// PAIEMENT — via backend authentifié (le montant est défini côté serveur)
 // ══════════════════════════════════════
-function openPaymentModal(plan) {
+async function openPaymentModal(plan) {
   currentPlan = plan;
   const p = PLANS[plan];
   document.getElementById('ppIcon').textContent = p.icon;
@@ -1060,50 +1007,29 @@ function openPaymentModal(plan) {
   document.getElementById('ppAmount').innerHTML = p.amount.toLocaleString('fr-FR') + ' <span>FCFA</span>';
   document.getElementById('ppDur').textContent  = p.dur;
   document.getElementById('payErr').style.display = 'none';
-  // Pré-remplir si connecté
-  if (currentUser) {
-    const nameParts = currentUser.name.split(' ');
-    document.getElementById('pFirst').value = nameParts[0] || '';
-    document.getElementById('pLast').value  = nameParts.slice(1).join(' ') || '';
-    document.getElementById('pEmail').value = currentUser.email || '';
+
+  // Connexion obligatoire avant paiement (le compte reçoit le plan)
+  if (!auth0Client || !(await auth0Client.isAuthenticated())) {
+    sessionStorage.setItem('pd_pending_plan', plan);
+    openModal('loginModal');
+    return;
   }
+  document.getElementById('payUserEmail').textContent = currentUser?.email || '';
   openModal('paymentModal');
 }
 
-function selPM(el, pm) {
-  document.querySelectorAll('.pm-opt').forEach(o => o.classList.remove('sel'));
-  el.classList.add('sel');
-  selectedPM = pm;
-}
-
 async function initiatePayment() {
-  const first = document.getElementById('pFirst').value.trim();
-  const last  = document.getElementById('pLast').value.trim();
-  const email = document.getElementById('pEmail').value.trim();
-  const phone = document.getElementById('pPhone').value.trim();
   const errEl = document.getElementById('payErr');
   errEl.style.display = 'none';
 
-  if (!first||!last||!email) return showErr(errEl,'Prénom, nom et email requis.');
-  if (!email.includes('@')) return showErr(errEl,'Email invalide.');
-
   setLoading('payNowBtn','payNowSpin','payNowTxt',true,'Connexion à GeniusPay...');
   try {
-    const data = await api('POST','/api/payment/initiate',{
-      amount: PLANS[currentPlan].amount,
-      plan: currentPlan,
-      firstName: first,
-      lastName: last,
-      email,
-      phone: phone || null,
-      paymentMethod: selectedPM,
-    }, false);
-
-    if (data.success && data.checkout_url) {
+    const data = await api('POST','/api/payment/initiate',{ planId: currentPlan });
+    const url = data.checkoutUrl || data.checkout_url;
+    if (data.success && url) {
       document.getElementById('payNowTxt').textContent = '✅ Redirection...';
-      sessionStorage.setItem('pd_ref',  data.reference);
-      sessionStorage.setItem('pd_plan', currentPlan);
-      window.location.href = data.checkout_url;
+      sessionStorage.setItem('pd_ref', data.reference);
+      window.location.href = url;
     } else {
       showErr(errEl, data.error || 'Erreur GeniusPay');
       setLoading('payNowBtn','payNowSpin','payNowTxt',false,'🔒 Payer maintenant');
@@ -1116,42 +1042,26 @@ async function initiatePayment() {
 
 async function checkPaymentReturn() {
   const params = new URLSearchParams(window.location.search);
-  const status = params.get('payment');
-  const ref    = sessionStorage.getItem('pd_ref');
+  const ref = params.get('ref') || sessionStorage.getItem('pd_ref');
+  const path = window.location.pathname;
+  const isSuccess = params.get('payment') === 'success' || path.startsWith('/payment/success');
+  const isFailed  = params.get('payment') === 'failed'  || params.get('payment') === 'error' || path.startsWith('/payment/failed');
 
-  if (status === 'success') {
-    document.getElementById('successPage').classList.add('show');
+  if (isSuccess) {
+    // Vérification serveur (source de vérité) puis rafraîchir le profil
+    if (ref) { try { await api('GET','/api/payment/verify/' + encodeURIComponent(ref)); } catch(e) {} }
     sessionStorage.removeItem('pd_ref');
-    sessionStorage.removeItem('pd_plan');
-    window.history.replaceState({}, '', '/');
-    // Recharger le profil si connecté
-    if (authToken) {
+    try {
       const d = await api('GET','/api/auth/me');
-      if (d.success) { currentUser = d.user; }
-    }
-  } else if (status === 'failed') {
+      if (d.success && d.user) currentUser = { ...currentUser, ...d.user, name: currentUser?.name || d.user.email };
+    } catch(e) {}
+    document.getElementById('successPage').classList.add('show');
+    window.history.replaceState({}, '', '/');
+    updateNavForAuth(!!currentUser);
+  } else if (isFailed) {
     document.getElementById('failedPage').classList.add('show');
     window.history.replaceState({}, '', '/');
   }
-}
-
-// ══════════════════════════════════════
-// AUTO-LOGIN AU CHARGEMENT
-// ══════════════════════════════════════
-async function autoLogin() {
-  const token = localStorage.getItem('privydoc_token');
-  if (!token) return;
-  authToken = token;
-  try {
-    const data = await api('GET','/api/auth/me');
-    if (data.success) {
-      currentUser = data.user;
-      updateNavForAuth(true);
-    } else {
-      authToken = null;
-      localStorage.removeItem('privydoc_token');
-    }
-  } catch(e) { authToken = null; }
 }
 
 // ══════════════════════════════════════
@@ -1208,7 +1118,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // INIT
 // ══════════════════════════════════════
 window.addEventListener('DOMContentLoaded', async () => {
-  await autoLogin();
+  await initAuth0();
   await checkPaymentReturn();
 });
 </script>
