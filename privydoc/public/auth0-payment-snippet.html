@@ -1,0 +1,152 @@
+<!-- public/auth0-payment-snippet.html
+═══════════════════════════════════════════════════════════
+À INTÉGRER DANS privydoc.html
+Auth0 : connexion Google + email/mot de passe (Universal Login)
+Paiement : appel du backend protégé → redirection checkout GeniusPay
+⚠️ AUCUNE clé secrète ici. Le Client ID Auth0 est public par nature.
+═══════════════════════════════════════════════════════════ -->
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+
+<script>
+// ── Configuration Auth0 (valeurs publiques, pas de secret) ──
+const AUTH0_CONFIG = {
+  domain: 'TON-TENANT.eu.auth0.com',        // ← depuis le dashboard Auth0
+  clientId: 'TON_CLIENT_ID_AUTH0',          // ← Client ID (public, OK côté navigateur)
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+    audience: 'https://api.privydoc.com',   // ← identifiant de ton API Auth0
+  },
+  cacheLocation: 'localstorage',            // garde la session après refresh
+};
+
+let auth0Client = null;
+let currentUser = null;
+
+// ── Initialisation au chargement de la page ──
+async function initAuth0() {
+  auth0Client = await auth0.createAuth0Client(AUTH0_CONFIG);
+
+  // Gérer le retour de redirection après login
+  if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+    await auth0Client.handleRedirectCallback();
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  if (isAuthenticated) {
+    currentUser = await auth0Client.getUser();
+    await syncProfile();           // crée/charge le profil PRIVYDOC côté backend
+    updateUIAuthenticated();       // ta fonction existante d'affichage dashboard
+  } else {
+    updateUILoggedOut();           // ta fonction existante d'affichage landing
+  }
+}
+
+// ── Connexion : Auth0 Universal Login affiche automatiquement
+//    le bouton Google ET le formulaire email/mot de passe ──
+async function login() {
+  await auth0Client.loginWithRedirect();
+}
+
+// Connexion directe via Google uniquement (optionnel)
+async function loginWithGoogle() {
+  await auth0Client.loginWithRedirect({
+    authorizationParams: { connection: 'google-oauth2' },
+  });
+}
+
+// Inscription email/mot de passe (ouvre l'onglet "Sign Up")
+async function signup() {
+  await auth0Client.loginWithRedirect({
+    authorizationParams: { screen_hint: 'signup' },
+  });
+}
+
+async function logout() {
+  await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
+}
+
+// ── Appel API authentifié : le token est joint automatiquement ──
+async function apiFetch(path, options = {}) {
+  const token = await auth0Client.getTokenSilently();
+  return fetch(path, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+// ── Synchroniser le profil PRIVYDOC à la connexion ──
+async function syncProfile() {
+  const res = await apiFetch('/api/auth/me');
+  const data = await res.json();
+  if (data.success) {
+    currentUser = { ...currentUser, ...data.user };
+  }
+}
+
+// ── PAIEMENT : initier un plan (micro | premium) ──
+async function payPlan(planId) {
+  const btn = document.getElementById('btn-pay-' + planId);
+  if (btn) { btn.disabled = true; btn.textContent = 'Connexion à GeniusPay...'; }
+
+  try {
+    // Si pas connecté → on force la connexion d'abord
+    if (!(await auth0Client.isAuthenticated())) {
+      sessionStorage.setItem('privydoc_pending_plan', planId);
+      return login();
+    }
+
+    const res = await apiFetch('/api/payment/initiate', {
+      method: 'POST',
+      body: JSON.stringify({ planId }), // ← seul le planId part au serveur, jamais le montant
+    });
+    const data = await res.json();
+
+    if (data.success && data.checkoutUrl) {
+      sessionStorage.setItem('privydoc_payment_ref', data.reference);
+      window.location.href = data.checkoutUrl; // → page GeniusPay (Mobile Money + Visa/Mastercard)
+    } else {
+      throw new Error(data.error || 'Erreur d\'initialisation');
+    }
+  } catch (err) {
+    alert('⚠️ ' + err.message);
+    if (btn) { btn.disabled = false; btn.textContent = '🔒 Payer maintenant'; }
+  }
+}
+
+// ── Au retour de GeniusPay (success_url) : vérification serveur ──
+async function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref') || sessionStorage.getItem('privydoc_payment_ref');
+  if (!ref || !window.location.pathname.includes('/payment/success')) return;
+
+  const res = await apiFetch('/api/payment/verify/' + encodeURIComponent(ref));
+  const data = await res.json();
+
+  if (data.success && data.paid) {
+    sessionStorage.removeItem('privydoc_payment_ref');
+    showBanner('✅ Paiement confirmé ! Votre plan ' + data.plan + ' est actif.', 'success');
+    await syncProfile();
+    updateUIAuthenticated();
+  } else {
+    showBanner('⏳ Paiement en cours de validation. Réessayez dans quelques instants.', 'warning');
+  }
+}
+
+window.addEventListener('load', async () => {
+  await initAuth0();
+  await checkPaymentReturn();
+
+  // Reprendre un paiement interrompu par la connexion
+  const pendingPlan = sessionStorage.getItem('privydoc_pending_plan');
+  if (pendingPlan && (await auth0Client.isAuthenticated())) {
+    sessionStorage.removeItem('privydoc_pending_plan');
+    payPlan(pendingPlan);
+  }
+});
+</script>
