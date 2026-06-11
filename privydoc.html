@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIVYDOC — Partage Intelligent & Sécurisé de Documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050810;--surface:#0c1120;--surface2:#111827;--border:rgba(255,255,255,0.06);--accent:#3B82F6;--accent2:#06B6D4;--accent3:#8B5CF6;--text:#F0F4FF;--muted:#8899BB;--danger:#EF4444;--success:#10B981;--gold:#F59E0B}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,8,16,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--text)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent3));border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo span{color:var(--accent2)}
+nav ul{display:flex;list-style:none;gap:2rem;align-items:center}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+nav ul a:hover{color:var(--text)}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white!important;padding:.5rem 1.2rem;border-radius:8px;font-weight:500!important}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+.badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:var(--accent2);padding:.3rem .9rem;border-radius:100px;font-size:.8rem;font-weight:500;margin-bottom:1.5rem}
+.badge::before{content:'';width:6px;height:6px;background:var(--success);border-radius:50%;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1.5rem}
+h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:580px;margin:0 auto 2.5rem;font-weight:300}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white;padding:.85rem 2rem;border-radius:10px;font-weight:500;font-size:1rem;display:inline-flex;align-items:center;gap:.5rem;transition:all .3s;box-shadow:0 0 30px rgba(59,130,246,.3);cursor:pointer;border:none;font-family:inherit;text-decoration:none}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(59,130,246,.5)}
+.btn-sec{background:transparent;color:var(--text);padding:.85rem 2rem;border-radius:10px;font-weight:400;font-size:1rem;border:1px solid var(--border);display:inline-flex;align-items:center;gap:.5rem;transition:all .3s;text-decoration:none;cursor:pointer;font-family:inherit}
+.btn-sec:hover{background:var(--surface)}
+/* CARDS */
+section{padding:5rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.slabel{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);font-weight:500;margin-bottom:.75rem}
+.stitle{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;line-height:1.2}
+.ssub{color:var(--muted);max-width:550px;font-size:1rem;font-weight:300}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
+.grid-5{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;transition:all .3s}
+.card:hover{border-color:rgba(59,130,246,.25);transform:translateY(-3px);box-shadow:0 15px 30px rgba(0,0,0,.3)}
+.card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem}
+.ci-blue{background:rgba(59,130,246,.15)}.ci-purple{background:rgba(139,92,246,.15)}.ci-cyan{background:rgba(6,182,212,.15)}.ci-green{background:rgba(16,185,129,.15)}.ci-gold{background:rgba(245,158,11,.15)}.ci-red{background:rgba(239,68,68,.15)}
+.card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.card-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;transition:all .3s;display:flex;flex-direction:column}
+.pricing-card.featured{border-color:rgba(59,130,246,.4);background:linear-gradient(145deg,rgba(59,130,246,.05),var(--surface));box-shadow:0 0 60px rgba(59,130,246,.1)}
+.popular-tag{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent3));color:white;font-size:.7rem;font-weight:600;letter-spacing:.1em;padding:.25rem .9rem;border-radius:0 0 8px 8px;text-transform:uppercase}
+.plan-name{font-family:'Syne',sans-serif;font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:.5rem}
+.plan-price{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.25rem;display:flex;align-items:baseline;gap:.3rem}
+.plan-price .cur{font-size:1rem;font-weight:500;color:var(--muted)}
+.plan-price .per{font-size:.8rem;font-weight:400;color:var(--muted)}
+.plan-desc{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.plan-feats{flex:1;display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.5rem}
+.plan-feat{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--muted)}
+.plan-feat.ok{color:var(--text)}
+.ck{color:var(--success)}.cx{color:rgba(255,255,255,.2)}
+/* BTNS PAIEMENT */
+.pay-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.9rem;border-radius:10px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .3s}
+.pay-btn:disabled{opacity:.6;cursor:not-allowed}
+.pay-btn:active:not(:disabled){transform:scale(.98)}
+.pb-free{background:transparent;border:1px solid var(--border);color:var(--text)}
+.pb-free:hover:not(:disabled){background:var(--surface2)}
+.pb-micro{background:linear-gradient(135deg,#06B6D4,#3B82F6);color:white;box-shadow:0 0 20px rgba(6,182,212,.3)}
+.pb-micro:hover:not(:disabled){box-shadow:0 0 35px rgba(6,182,212,.5);transform:translateY(-2px)}
+.pb-premium{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white;box-shadow:0 0 20px rgba(59,130,246,.3)}
+.pb-premium:hover:not(:disabled){box-shadow:0 0 35px rgba(59,130,246,.5);transform:translateY(-2px)}
+/* PAYMENT METHODS */
+.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0}
+.pm-opt{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:.6rem;cursor:pointer;transition:all .2s;text-align:center;font-size:.8rem;color:var(--muted)}
+.pm-opt:hover{border-color:rgba(59,130,246,.4);color:var(--text)}
+.pm-opt.sel{border-color:var(--accent);background:rgba(59,130,246,.08);color:var(--text)}
+.pm-opt .pm-ic{font-size:1.1rem;display:block;margin-bottom:.2rem}
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:460px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.modal-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem}
+.modal-close:hover{color:var(--text)}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.4rem;font-weight:500}
+.fg input,.fg select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--accent)}
+.err-box{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--danger);padding:.6rem .9rem;border-radius:8px;font-size:.82rem;margin-bottom:1rem}
+.form-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:.75rem}
+/* SPINNER */
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* PAYMENT MODAL */
+.pay-modal-hdr{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.pay-plan-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.pay-amount{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800}
+.pay-amount span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.secure-note{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.75rem;color:var(--muted);margin-top:.75rem}
+/* DASHBOARD */
+#dashPage{display:none;position:fixed;inset:0;background:var(--bg);z-index:300;overflow-y:auto}
+.dash-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.dash-content{max-width:1100px;margin:0 auto;padding:2rem}
+.dash-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.dash-tab{padding:.5rem 1.2rem;border-radius:8px;font-size:.85rem;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;transition:all .2s}
+.dash-tab.active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4);color:var(--accent)}
+.dash-panel{display:none}
+.dash-panel.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;align-items:center;gap:1rem}
+.kpi-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.kpi-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800}
+.kpi-lbl{font-size:.72rem;color:var(--muted)}
+.dash-sec-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.dash-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+.dash-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1rem;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(59,130,246,.03)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.uz-icon{font-size:2.5rem;margin-bottom:.75rem}
+.doc-item{background:var(--surface2);border-radius:8px;padding:.75rem;display:flex;align-items:center;justify-content:space-between;font-size:.82rem;margin-bottom:.5rem;border:1px solid var(--border)}
+.doc-left{display:flex;align-items:center;gap:.6rem}
+.doc-ext{width:32px;height:32px;border-radius:6px;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#EF4444}
+.doc-name{font-weight:500;font-size:.85rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-meta{font-size:.7rem;color:var(--muted)}
+.dba{padding:.2rem .55rem;border-radius:5px;font-size:.7rem;border:none;cursor:pointer;font-family:inherit}
+.dba-links{background:rgba(59,130,246,.15);color:var(--accent)}
+.dba-del{background:rgba(239,68,68,.15);color:var(--danger)}
+/* LIENS */
+.link-item{background:var(--surface2);border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem;border:1px solid var(--border)}
+.link-url{font-family:monospace;font-size:.78rem;color:var(--accent2);margin-bottom:.3rem;word-break:break-all}
+.link-meta{font-size:.72rem;color:var(--muted)}
+.link-actions{display:flex;gap:.4rem;margin-top:.4rem}
+.lba{padding:.2rem .55rem;border-radius:5px;font-size:.7rem;border:none;cursor:pointer;font-family:inherit}
+.lba-copy{background:rgba(6,182,212,.15);color:var(--accent2)}
+.lba-rev{background:rgba(239,68,68,.15);color:var(--danger)}
+/* LINK GEN MODAL */
+.link-gen-form{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-top:1rem}
+/* PLAN BANNER */
+.plan-banner{background:linear-gradient(135deg,rgba(59,130,246,.07),rgba(139,92,246,.05));border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+/* ACTIVITY */
+.act-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:var(--surface2);border-radius:8px;font-size:.8rem;margin-bottom:.4rem;border:1px solid var(--border)}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:white;flex-shrink:0}
+.av-b{background:var(--accent)}.av-p{background:var(--accent3)}.av-c{background:var(--accent2)}
+.abadge{font-size:.7rem;padding:.15rem .5rem;border-radius:100px}
+.ab-ok{background:rgba(16,185,129,.15);color:var(--success)}
+.ab-warn{background:rgba(245,158,11,.15);color:var(--gold)}
+/* SUCCESS/FAILED PAGES */
+.result-page{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem}
+.result-page.show{display:flex}
+.result-icon{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem}
+.ri-ok{background:rgba(16,185,129,.15);border:2px solid var(--success);animation:scIn .5s ease}
+.ri-fail{background:rgba(239,68,68,.15);border:2px solid var(--danger)}
+@keyframes scIn{from{transform:scale(0)}to{transform:scale(1)}}
+/* MISC */
+.chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.chip{padding:.35rem .85rem;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-size:.8rem;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+@media(max-width:768px){nav ul{display:none}.hamburger{display:flex}nav ul.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:1.5rem 2rem;gap:1.2rem;z-index:99}.dash-2col{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}.pm-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SUCCESS PAGE -->
+<div class="result-page" id="successPage">
+  <div class="result-icon ri-ok">✅</div>
+  <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.75rem">Paiement réussi !</h2>
+  <p style="color:var(--muted);max-width:400px;margin:0 auto 2rem">Votre accès PRIVYDOC a été activé. Reconnectez-vous pour profiter de votre plan.</p>
+  <button class="btn-primary" onclick="document.getElementById('successPage').classList.remove('show');openModal('loginModal')">🔐 Se connecter</button>
+</div>
+
+<!-- FAILED PAGE -->
+<div class="result-page" id="failedPage">
+  <div class="result-icon ri-fail">❌</div>
+  <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.75rem">Paiement échoué</h2>
+  <p style="color:var(--muted);max-width:400px;margin:0 auto 2rem">Une erreur est survenue. Veuillez réessayer.</p>
+  <button class="btn-primary" onclick="document.getElementById('failedPage').classList.remove('show')">↩ Réessayer</button>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo"><div class="logo-icon">🔒</div>PRIVY<span>DOC</span></a>
+  <ul id="navMenu">
+    <li><a href="#features">Fonctionnalités</a></li>
+    <li><a href="#security">Sécurité</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#" id="navLoginBtn" onclick="openModal('loginModal');return false" style="color:var(--muted)">Connexion</a></li>
+    <li><a href="#" id="navSignupBtn" onclick="openModal('signupModal');return false" class="nav-cta">Commencer Gratuitement</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="badge">🌍 Plateforme SaaS Mondiale · 50+ pays</div>
+  <h1>Le <span class="hl">Netflix sécurisé</span><br>du document privé</h1>
+  <p class="hero-sub">Partagez vos documents en toute confiance. Contrôlez chaque accès, détectez les abus, bloquez les partages illégaux — en temps réel.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="openModal('signupModal')">🚀 Essai Gratuit — 2 Documents</button>
+    <a href="#features" class="btn-sec">Voir les fonctionnalités →</a>
+  </div>
+  <!-- Demo card -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:480px;width:100%;margin:3rem auto 0;text-align:left;box-shadow:0 40px 80px rgba(0,0,0,.5)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <div style="width:36px;height:36px;background:rgba(239,68,68,.15);border-radius:8px;display:flex;align-items:center;justify-content:center">📄</div>
+        <div><div style="font-size:.9rem;font-weight:500">Cours_Marketing_S2.pdf</div><div style="font-size:.72rem;color:var(--muted)">2.4 MB · Protégé</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--success);background:rgba(16,185,129,.1);padding:.3rem .7rem;border-radius:100px;border:1px solid rgba(16,185,129,.2)"><div style="width:5px;height:5px;background:var(--success);border-radius:50%"></div>Actif</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;font-size:.78rem">
+        <div><div style="color:var(--accent2);font-family:monospace">privydoc.com/access/XA82KD</div><div style="color:var(--muted);font-size:.7rem">👤 Kouassi Yao · 3 ouvertures</div></div>
+        <div style="display:flex;gap:.4rem"><button class="dba dba-links">Voir</button><button class="dba dba-del">Bloquer</button></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;font-size:.78rem">
+        <div><div style="color:var(--accent2);font-family:monospace">privydoc.com/access/TY91QP</div><div style="color:var(--muted);font-size:.7rem">👤 Amara Diallo · 1 ouverture</div></div>
+        <div style="display:flex;gap:.4rem"><button class="dba dba-links">Voir</button><button class="dba dba-del">Bloquer</button></div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--muted)">
+      <span>📊 12 ouvertures · 2 appareils actifs</span>
+      <span style="color:var(--gold)">🔏 Watermark actif</span>
+    </div>
+  </div>
+  <!-- Stats -->
+  <div style="display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;margin-top:4rem">
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">50+</div><div style="font-size:.78rem;color:var(--muted)">Pays couverts</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">AES-256</div><div style="font-size:.78rem;color:var(--muted)">Chiffrement</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">100%</div><div style="font-size:.78rem;color:var(--muted)">Anti-téléchargement</div></div>
+    <div style="text-align:center"><div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--text),var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent">14</div><div style="font-size:.78rem;color:var(--muted)">Langues</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background:var(--surface)">
+  <div class="container">
+    <div class="slabel">Fonctionnalités</div>
+    <h2 class="stitle">Tout pour protéger<br>vos contenus</h2>
+    <div class="grid-3">
+      <div class="card reveal"><div class="card-icon ci-blue">🔒</div><div class="card-title">Visionneuse Ultra Sécurisée</div><p class="card-desc">Lecture uniquement dans notre visionneuse propriétaire. Téléchargement, copier-coller, clic droit entièrement bloqués.</p></div>
+      <div class="card reveal"><div class="card-icon ci-gold">💧</div><div class="card-title">Watermark Dynamique</div><p class="card-desc">Chaque page affiche automatiquement le nom, email et date de l'utilisateur. Mobile, difficile à retirer.</p></div>
+      <div class="card reveal"><div class="card-icon ci-purple">📱</div><div class="card-title">Liaison Appareil</div><p class="card-desc">Chaque accès lié à un appareil précis. Copier les données rend le document inutilisable.</p></div>
+      <div class="card reveal"><div class="card-icon ci-cyan">📡</div><div class="card-title">Liens Privés Individuels</div><p class="card-desc">Un lien unique par utilisateur, traçable et révocable. Détection instantanée du partage suspect.</p></div>
+      <div class="card reveal"><div class="card-icon ci-green">🕐</div><div class="card-title">Mode Examen / Cours</div><p class="card-desc">Document accessible uniquement sur une plage horaire définie. Verrouillage automatique.</p></div>
+      <div class="card reveal"><div class="card-icon ci-red">⚠️</div><div class="card-title">Détection Partage Suspect</div><p class="card-desc">Plusieurs appareils, plusieurs pays détectés automatiquement avec score de risque en temps réel.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security">
+  <div class="container">
+    <div class="slabel">Sécurité</div>
+    <h2 class="stitle">Protection militaire<br>à chaque niveau</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:3rem" class="sec-layout">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:1.2rem">
+          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🛡️</div><div><div style="font-weight:500;margin-bottom:.2rem">Chiffrement AES-256</div><div style="font-size:.82rem;color:var(--muted)">Standard militaire. Vos fichiers réels ne sont jamais accessibles directement.</div></div></div>
+          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🔑</div><div><div style="font-weight:500;margin-bottom:.2rem">Authentification Renforcée</div><div style="font-size:.82rem;color:var(--muted)">JWT sécurisé, sessions chiffrées, vérification à chaque ouverture.</div></div></div>
+          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">⚡</div><div><div style="font-weight:500;margin-bottom:.2rem">Révocation Instantanée</div><div style="font-size:.82rem;color:var(--muted)">Bloquez un lien ou toutes les sessions en 1 clic. Effet immédiat.</div></div></div>
+          <div class="reveal" style="display:flex;align-items:flex-start;gap:1rem"><div style="width:36px;height:36px;min-width:36px;border-radius:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center">🌐</div><div><div style="font-weight:500;margin-bottom:.2rem">CDN Mondial Cloudflare</div><div style="font-size:.82rem;color:var(--muted)">Infrastructure mondiale pour une disponibilité et vitesse optimales.</div></div></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem">
+          <div style="background:var(--surface2);border-radius:10px;padding:1.5rem;position:relative;overflow:hidden">
+            <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem">
+              <div style="height:10px;background:rgba(255,255,255,.08);border-radius:4px;width:100%"></div>
+              <div style="height:10px;background:rgba(255,255,255,.08);border-radius:4px;width:80%"></div>
+              <div style="height:10px;background:rgba(255,255,255,.08);border-radius:4px;width:100%"></div>
+              <div style="height:10px;background:rgba(255,255,255,.08);border-radius:4px;width:60%"></div>
+              <div style="height:10px;background:rgba(255,255,255,.08);border-radius:4px;width:100%"></div>
+            </div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-25deg);pointer-events:none">
+              <div style="text-align:center">
+                <div style="font-size:.72rem;color:rgba(59,130,246,.2);font-weight:600;text-transform:uppercase;letter-spacing:.05em">Document Privé · Kouassi Yao</div>
+                <div style="font-size:.62rem;color:rgba(59,130,246,.15);margin-top:.3rem">kouassi@example.com · 17 Jan 2025</div>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(5,8,16,.9));padding:1rem;font-size:.72rem;color:var(--danger)">🚫 Téléchargement bloqué · Copie désactivée</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem">
+            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--success);border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.05)">✓ AES-256</div>
+            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--accent);border:1px solid rgba(59,130,246,.3);background:rgba(59,130,246,.05)">✓ JWT</div>
+            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:#A78BFA;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.05)">✓ WebCrypto</div>
+            <div style="padding:.3rem .75rem;border-radius:100px;font-size:.72rem;color:var(--danger);border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.05)">✓ Anti-extract</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGETS -->
+<section style="background:var(--surface)">
+  <div class="container">
+    <div class="slabel">Pour qui</div>
+    <h2 class="stitle">Conçu pour tous les<br>créateurs de contenu</h2>
+    <div class="grid-5" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">👨‍🏫</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Professeurs</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">🏫</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Écoles</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">🎓</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Universités</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">💼</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Coachs</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">🏢</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Entreprises</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">✍️</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Auteurs</div></div>
+      <div class="card reveal" style="text-align:center;padding:1.5rem 1rem"><div style="font-size:2rem;margin-bottom:.75rem">🎨</div><div style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600">Créateurs</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="slabel">Tarifs</div>
+    <h2 class="stitle">Formules adaptées<br>à chaque besoin</h2>
+    <p class="ssub">Commencez gratuitement. Paiements sécurisés via GeniusPay — Wave, Orange Money, MTN, cartes bancaires.</p>
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="pricing-card reveal">
+        <div class="plan-name">Essai Gratuit</div>
+        <div class="plan-price"><span>0</span><span class="cur">FCFA</span></div>
+        <div class="plan-desc">2 documents, accès illimité, sans carte bancaire</div>
+        <div class="plan-feats">
+          <div class="plan-feat ok"><span class="ck">✓</span> 2 documents</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Liens privés sécurisés</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Visionneuse sécurisée</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Statistiques basiques</div>
+          <div class="plan-feat"><span class="cx">✕</span> Watermark avancé</div>
+          <div class="plan-feat"><span class="cx">✕</span> Mode examen</div>
+        </div>
+        <button class="pay-btn pb-free" onclick="openModal('signupModal')">Commencer — Gratuit</button>
+      </div>
+      <!-- MICRO -->
+      <div class="pricing-card reveal">
+        <div class="plan-name">Formule Petit Coût</div>
+        <div class="plan-price"><span>200</span><span class="cur">FCFA</span><span class="per">/ 2 jours</span></div>
+        <div class="plan-desc">1 document complet, idéal pour un partage ponctuel</div>
+        <div class="plan-feats">
+          <div class="plan-feat ok"><span class="ck">✓</span> 1 document</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Liens individuels</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Watermark simple</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Statistiques simples</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Blocage liens</div>
+          <div class="plan-feat"><span class="cx">✕</span> Upload multiple</div>
+        </div>
+        <button class="pay-btn pb-micro" id="microBtn" onclick="openPaymentModal('micro')">
+          <span class="spinner" id="microSpin"></span>
+          <span id="microTxt">💳 Payer 200 FCFA</span>
+        </button>
+      </div>
+      <!-- PREMIUM -->
+      <div class="pricing-card featured reveal">
+        <div class="popular-tag">⭐ Le plus populaire</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><span>5 000</span><span class="cur">FCFA</span><span class="per">/ 2 mois</span></div>
+        <div class="plan-desc">Accès complet. Pour les pros et institutions.</div>
+        <div class="plan-feats">
+          <div class="plan-feat ok"><span class="ck">✓</span> Documents illimités</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Utilisateurs illimités</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Watermark avancé</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Analytics complets</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Mode examen</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Mode hors ligne</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> WhatsApp/SMS auto</div>
+          <div class="plan-feat ok"><span class="ck">✓</span> Support prioritaire</div>
+        </div>
+        <button class="pay-btn pb-premium" id="premiumBtn" onclick="openPaymentModal('premium')">
+          <span class="spinner" id="premiumSpin"></span>
+          <span id="premiumTxt">💳 Payer 5 000 FCFA</span>
+        </button>
+      </div>
+    </div>
+    <!-- Payment methods -->
+    <div style="margin-top:2rem;text-align:center">
+      <div class="slabel" style="margin-bottom:.75rem">Moyens de paiement acceptés</div>
+      <div class="chip-grid" style="justify-content:center">
+        <div class="chip">🌊 Wave</div><div class="chip">🟠 Orange Money</div>
+        <div class="chip">🟡 MTN MoMo</div><div class="chip">🔵 Moov Money</div>
+        <div class="chip">💳 Visa/Mastercard</div><div class="chip">📱 Airtel Money</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUES -->
+<section style="background:var(--surface);padding:4rem 2rem">
+  <div class="container">
+    <div class="slabel">International</div>
+    <h2 class="stitle">Plateforme mondiale<br>14 langues</h2>
+    <div class="chip-grid reveal">
+      <div class="chip">🇫🇷 Français</div><div class="chip">🇬🇧 English</div><div class="chip">🇪🇸 Español</div>
+      <div class="chip">🇵🇹 Português</div><div class="chip">🇸🇦 العربية</div><div class="chip">🇩🇪 Deutsch</div>
+      <div class="chip">🇮🇹 Italiano</div><div class="chip">🇨🇳 中文</div><div class="chip">🇯🇵 日本語</div>
+      <div class="chip">🇰🇷 한국어</div><div class="chip">🇮🇳 हिन्दी</div><div class="chip">🇷🇺 Русский</div>
+      <div class="chip">🇹🇷 Türkçe</div><div class="chip">🌍 Kiswahili</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding:5rem 2rem">
+  <div class="container" style="text-align:center">
+    <div class="slabel">FAQ</div>
+    <h2 class="stitle">Questions fréquentes</h2>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:3rem;max-width:700px;margin-left:auto;margin-right:auto">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:1.1rem 1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:.9rem" onclick="toggleFaq(this)"><span>Comment PRIVYDOC empêche-t-il le téléchargement ?</span><span>▼</span></div>
+      <div style="max-height:0;overflow:hidden;transition:max-height .4s;font-size:.85rem;color:var(--muted);line-height:1.7" class="faq-body">
+        <div style="padding:0 1.25rem 1.1rem">Les documents sont affichés dans une visionneuse propriétaire. Le vrai fichier n'est jamais transmis. Téléchargement, clic droit, copier-coller et sélection de texte entièrement bloqués.</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:1.1rem 1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:.9rem" onclick="toggleFaq(this)"><span>Que se passe-t-il si quelqu'un partage son lien ?</span><span>▼</span></div>
+      <div style="max-height:0;overflow:hidden;transition:max-height .4s;font-size:.85rem;color:var(--muted);line-height:1.7" class="faq-body">
+        <div style="padding:0 1.25rem 1.1rem">Chaque lien est unique et lié à une identité. Si un autre appareil tente de l'utiliser, le système détecte l'anomalie et alerte le propriétaire immédiatement. Révocation possible en 1 clic.</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:1.1rem 1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:.9rem" onclick="toggleFaq(this)"><span>Quels moyens de paiement sont acceptés ?</span><span>▼</span></div>
+      <div style="max-height:0;overflow:hidden;transition:max-height .4s;font-size:.85rem;color:var(--muted);line-height:1.7" class="faq-body">
+        <div style="padding:0 1.25rem 1.1rem">Wave, Orange Money, MTN MoMo, Moov Money, Airtel Money et cartes bancaires (Visa/Mastercard) via GeniusPay. Paiement sécurisé et instantané.</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:1.1rem 1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:.9rem" onclick="toggleFaq(this)"><span>Puis-je gérer des centaines d'élèves ?</span><span>▼</span></div>
+      <div style="max-height:0;overflow:hidden;transition:max-height .4s;font-size:.85rem;color:var(--muted);line-height:1.7" class="faq-body">
+        <div style="padding:0 1.25rem 1.1rem">Oui. Importez votre liste via CSV, créez des groupes/classes, générez tous les liens en une opération. La formule Premium donne un accès illimité en utilisateurs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align:center;padding:5rem 2rem;position:relative;overflow:hidden;background:var(--surface)">
+  <div style="position:absolute;width:600px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(59,130,246,.08),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none"></div>
+  <div style="position:relative;z-index:1">
+    <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:1rem">Protégez vos contenus<br>dès aujourd'hui</h2>
+    <p style="color:var(--muted);max-width:500px;margin:0 auto 2rem">Commencez avec 2 documents gratuits. Aucune carte bancaire requise.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal('signupModal')">🚀 Créer mon compte gratuitement</button>
+      <a href="#pricing" class="btn-sec">Voir les tarifs →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid var(--border);padding:3rem 2rem;background:var(--bg)">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem">
+    <div>
+      <a href="#" class="logo"><div class="logo-icon">🔒</div>PRIVY<span>DOC</span></a>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.75rem;max-width:280px;line-height:1.6">La plateforme mondiale de partage sécurisé et contrôlé de documents privés.</p>
+    </div>
+    <div><h4 style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:1rem">Produit</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem"><li><a href="#features" style="color:var(--muted);text-decoration:none;font-size:.85rem">Fonctionnalités</a></li><li><a href="#security" style="color:var(--muted);text-decoration:none;font-size:.85rem">Sécurité</a></li><li><a href="#pricing" style="color:var(--muted);text-decoration:none;font-size:.85rem">Tarifs</a></li></ul></div>
+    <div><h4 style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:1rem">Pour qui</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem"><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">Enseignants</a></li><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">Entreprises</a></li><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">Créateurs</a></li></ul></div>
+    <div><h4 style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:1rem">Légal</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem"><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">CGU</a></li><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">Confidentialité</a></li><li><a href="#" style="color:var(--muted);text-decoration:none;font-size:.85rem">Contact</a></li></ul></div>
+  </div>
+  <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--muted)">
+    <span>© 2025 PRIVYDOC. Tous droits réservés.</span>
+    <span>🔒 Paiements sécurisés par GeniusPay</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     MODALS
+═══════════════════════════════════════ -->
+
+<!-- INSCRIPTION -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+    <h3>Créer mon compte</h3>
+    <p class="modal-sub">2 documents gratuits · Sans carte bancaire</p>
+    <div class="err-box" id="signupErr"></div>
+    <div class="fg"><label>Nom complet *</label><input type="text" id="sName" placeholder="Kouassi Yao"></div>
+    <div class="fg"><label>Email *</label><input type="email" id="sEmail" placeholder="vous@exemple.com"></div>
+    <div class="fg"><label>Mot de passe * <span style="color:var(--muted);font-size:.72rem">(min. 8 caractères)</span></label><input type="password" id="sPass" placeholder="Minimum 8 caractères"></div>
+    <div class="fg"><label>Confirmer mot de passe *</label><input type="password" id="sPass2" placeholder="Répétez votre mot de passe"></div>
+    <div class="fg"><label>Vous êtes *</label>
+      <select id="sRole">
+        <option value="">-- Choisissez votre profil --</option>
+        <option value="teacher">Professeur / Enseignant</option>
+        <option value="school">École / Université</option>
+        <option value="training">Centre de formation</option>
+        <option value="coach">Coach / Consultant</option>
+        <option value="company">Entreprise</option>
+        <option value="author">Auteur / Créateur</option>
+      </select>
+    </div>
+    <button class="pay-btn pb-premium" id="signupBtn" onclick="handleSignup()">
+      <span class="spinner" id="signupSpin"></span>
+      <span id="signupTxt">🚀 Créer mon compte gratuit</span>
+    </button>
+    <p class="form-note">Déjà un compte ? <a href="#" onclick="closeModal('signupModal');openModal('loginModal')" style="color:var(--accent)">Se connecter</a></p>
+  </div>
+</div>
+
+<!-- CONNEXION -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h3>Se connecter</h3>
+    <p class="modal-sub">Accédez à votre espace PRIVYDOC</p>
+    <div class="err-box" id="loginErr"></div>
+    <div class="fg"><label>Email *</label><input type="email" id="lEmail" placeholder="vous@exemple.com"></div>
+    <div class="fg"><label>Mot de passe *</label><input type="password" id="lPass" placeholder="Votre mot de passe"></div>
+    <button class="pay-btn pb-premium" id="loginBtn" onclick="handleLogin()">
+      <span class="spinner" id="loginSpin"></span>
+      <span id="loginTxt">🔐 Se connecter</span>
+    </button>
+    <p class="form-note">Pas de compte ? <a href="#" onclick="closeModal('loginModal');openModal('signupModal')" style="color:var(--accent)">Créer un compte gratuit</a></p>
+  </div>
+</div>
+
+<!-- PAIEMENT -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('paymentModal')">✕</button>
+    <div class="pay-modal-hdr">
+      <div class="pay-plan-icon" id="ppIcon" style="background:rgba(6,182,212,.15)">⚡</div>
+      <div>
+        <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em" id="ppName">Plan</div>
+        <div class="pay-amount" id="ppAmount">200 <span>FCFA</span></div>
+        <div style="font-size:.72rem;color:var(--muted)" id="ppDur">2 jours d'accès</div>
+      </div>
+    </div>
+    <div class="err-box" id="payErr"></div>
+    <div class="fg"><label>Prénom *</label><input type="text" id="pFirst" placeholder="Kouassi"></div>
+    <div class="fg"><label>Nom *</label><input type="text" id="pLast" placeholder="Yao"></div>
+    <div class="fg"><label>Email *</label><input type="email" id="pEmail" placeholder="vous@exemple.com"></div>
+    <div class="fg"><label>Téléphone <span style="color:var(--muted);font-size:.72rem">(optionnel)</span></label><input type="tel" id="pPhone" placeholder="+225 07 00 00 00 00"></div>
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem;font-weight:500">Moyen de paiement préféré</div>
+    <div class="pm-grid">
+      <div class="pm-opt sel" onclick="selPM(this,'wave')"><span class="pm-ic">🌊</span>Wave</div>
+      <div class="pm-opt" onclick="selPM(this,'orange_money')"><span class="pm-ic">🟠</span>Orange Money</div>
+      <div class="pm-opt" onclick="selPM(this,'mtn_money')"><span class="pm-ic">🟡</span>MTN MoMo</div>
+      <div class="pm-opt" onclick="selPM(this,'moov_money')"><span class="pm-ic">🔵</span>Moov Money</div>
+    </div>
+    <button class="pay-btn pb-premium" id="payNowBtn" onclick="initiatePayment()">
+      <span class="spinner" id="payNowSpin"></span>
+      <span id="payNowTxt">🔒 Payer maintenant</span>
+    </button>
+    <div class="secure-note">🔒 Sécurisé par <strong style="color:var(--accent2);margin-left:.2rem">GeniusPay</strong></div>
+  </div>
+</div>
+
+<!-- GÉNÉRER LIEN -->
+<div class="modal-overlay" id="genLinkModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('genLinkModal')">✕</button>
+    <h3>🔗 Générer un lien privé</h3>
+    <p class="modal-sub">Créez un lien d'accès individuel et sécurisé</p>
+    <input type="hidden" id="genLinkDocId">
+    <div class="err-box" id="genLinkErr"></div>
+    <div class="fg"><label>Nom du destinataire *</label><input type="text" id="glName" placeholder="Kouassi Yao"></div>
+    <div class="fg"><label>Email du destinataire</label><input type="email" id="glEmail" placeholder="kouassi@exemple.com"></div>
+    <div class="fg"><label>Appareils maximum</label>
+      <select id="glDevices"><option value="1">1 appareil</option><option value="2">2 appareils</option><option value="999">Illimité</option></select>
+    </div>
+    <div class="fg"><label>Expiration <span style="color:var(--muted);font-size:.72rem">(optionnel)</span></label>
+      <select id="glExpiry"><option value="">Jamais</option><option value="24">24 heures</option><option value="48">48 heures</option><option value="168">7 jours</option><option value="720">30 jours</option></select>
+    </div>
+    <button class="pay-btn pb-premium" id="genLinkBtn" onclick="generateLink()">
+      <span class="spinner" id="genLinkSpin"></span>
+      <span id="genLinkTxt">🔗 Générer le lien</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════ -->
+<div id="dashPage">
+  <div class="dash-nav">
+    <a href="#" class="logo" onclick="closeDash();return false"><div class="logo-icon">🔒</div>PRIVY<span>DOC</span></a>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <span style="font-size:.85rem;color:var(--muted)">👤 <strong id="dashName" style="color:var(--text)">Utilisateur</strong></span>
+      <span id="dashPlanBadge" style="padding:.25rem .7rem;border-radius:100px;font-size:.72rem;font-weight:600;background:rgba(16,185,129,.15);color:var(--success);border:1px solid rgba(16,185,129,.3)">Gratuit</span>
+      <button onclick="handleLogout()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--danger);padding:.4rem .9rem;border-radius:7px;font-size:.8rem;cursor:pointer;font-family:inherit">Déconnexion</button>
+    </div>
+  </div>
+  <div class="dash-content">
+    <!-- Tabs -->
+    <div class="dash-tabs">
+      <button class="dash-tab active" onclick="switchTab('overview')">📊 Vue d'ensemble</button>
+      <button class="dash-tab" onclick="switchTab('docs')">📄 Mes Documents</button>
+      <button class="dash-tab" onclick="switchTab('links')">🔗 Liens Actifs</button>
+      <button class="dash-tab" onclick="switchTab('upgrade')">⭐ Upgrade</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="dash-panel active" id="tab-overview">
+      <div class="plan-banner">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:.3rem">🎯 Forfait : <span id="planLabel" style="color:var(--success)">Essai Gratuit</span></div>
+          <p style="font-size:.82rem;color:var(--muted)" id="planDesc">2 documents disponibles</p>
+        </div>
+        <button class="pay-btn pb-premium" style="max-width:180px;padding:.6rem 1rem;font-size:.82rem" onclick="switchTab('upgrade')">⭐ Passer Premium</button>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-ico ci-blue">📄</div><div><div class="kpi-num" id="kDocs">0</div><div class="kpi-lbl">Documents</div></div></div>
+        <div class="kpi"><div class="kpi-ico ci-green">🔗</div><div><div class="kpi-num" id="kLinks">0</div><div class="kpi-lbl">Liens actifs</div></div></div>
+        <div class="kpi"><div class="kpi-ico ci-gold">👁️</div><div><div class="kpi-num" id="kViews">0</div><div class="kpi-lbl">Ouvertures</div></div></div>
+        <div class="kpi"><div class="kpi-ico ci-red">⚠️</div><div><div class="kpi-num" id="kSusp">0</div><div class="kpi-lbl">Suspects</div></div></div>
+      </div>
+      <div>
+        <div class="dash-sec-title">📋 Activité Récente</div>
+        <div id="activityList"><div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Partagez vos premiers liens pour voir l'activité ici.</div></div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="dash-panel" id="tab-docs">
+      <div class="dash-sec-title">📤 Uploader un Document</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" onchange="handleFileUpload(this)">
+        <div class="uz-icon">📁</div>
+        <p><strong style="color:var(--text)">Cliquez pour uploader</strong> ou glissez-déposez</p>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:.3rem">PDF, Word, Excel, PowerPoint, Images · Max 50 MB</p>
+      </div>
+      <div id="uploadProgress" style="display:none;margin-bottom:1rem">
+        <div style="background:var(--surface2);border-radius:8px;height:8px;overflow:hidden">
+          <div id="uploadBar" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));width:0%;transition:width .3s;border-radius:8px"></div>
+        </div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.4rem;text-align:center" id="uploadStatus">Upload en cours...</div>
+      </div>
+      <div class="dash-sec-title" style="margin-top:1.5rem">📄 Mes Documents</div>
+      <div id="docsList"><div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun document. Uploadez votre premier fichier.</div></div>
+    </div>
+
+    <!-- LIENS -->
+    <div class="dash-panel" id="tab-links">
+      <div class="dash-sec-title">🔗 Liens Privés Actifs</div>
+      <div id="linksList"><div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun lien. Uploadez un document et générez des liens d'accès.</div></div>
+    </div>
+
+    <!-- UPGRADE -->
+    <div class="dash-panel" id="tab-upgrade">
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:1.5rem">⭐ Passez au niveau supérieur</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="plan-name">Formule Petit Coût</div>
+          <div class="plan-price"><span>200</span><span class="cur">FCFA</span><span class="per">/ 2 jours</span></div>
+          <div class="plan-desc">1 document, accès 2 jours</div>
+          <div class="plan-feats">
+            <div class="plan-feat ok"><span class="ck">✓</span> 1 document</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Liens privés</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Watermark</div>
+          </div>
+          <button class="pay-btn pb-micro" onclick="openPaymentModal('micro')">💳 Payer 200 FCFA</button>
+        </div>
+        <div class="pricing-card featured">
+          <div class="popular-tag">⭐ Recommandé</div>
+          <div class="plan-name">Premium</div>
+          <div class="plan-price"><span>5 000</span><span class="cur">FCFA</span><span class="per">/ 2 mois</span></div>
+          <div class="plan-desc">Tout illimité, toutes fonctionnalités</div>
+          <div class="plan-feats">
+            <div class="plan-feat ok"><span class="ck">✓</span> Documents illimités</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Utilisateurs illimités</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Analytics complets</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Mode examen</div>
+            <div class="plan-feat ok"><span class="ck">✓</span> Support prioritaire</div>
+          </div>
+          <button class="pay-btn pb-premium" onclick="openPaymentModal('premium')">💳 Payer 5 000 FCFA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let currentUser = null;
+let authToken   = null;
+let currentPlan = 'micro';
+let selectedPM  = 'wave';
+let allDocs     = [];
+let allLinks    = [];
+
+const PLANS = {
+  micro:   { name:'Formule Petit Coût', amount:200, dur:"2 jours d'accès", icon:'⚡', bg:'rgba(6,182,212,.15)' },
+  premium: { name:'Abonnement Premium', amount:5000, dur:"2 mois d'accès complet", icon:'⭐', bg:'rgba(59,130,246,.15)' },
+};
+
+// ══════════════════════════════════════
+// API HELPER
+// ══════════════════════════════════════
+async function api(method, endpoint, body, useAuth = true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (useAuth && authToken) headers['Authorization'] = 'Bearer ' + authToken;
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  const res  = await fetch(endpoint, opts);
+  return await res.json();
+}
+
+// ══════════════════════════════════════
+// AUTH — INSCRIPTION
+// ══════════════════════════════════════
+async function handleSignup() {
+  const name = document.getElementById('sName').value.trim();
+  const email = document.getElementById('sEmail').value.trim();
+  const pass  = document.getElementById('sPass').value;
+  const pass2 = document.getElementById('sPass2').value;
+  const role  = document.getElementById('sRole').value;
+  const errEl = document.getElementById('signupErr');
+  errEl.style.display = 'none';
+
+  if (!name||!email||!pass||!pass2||!role) return showErr(errEl,'Veuillez remplir tous les champs.');
+  if (!email.includes('@')) return showErr(errEl,'Email invalide.');
+  if (pass.length < 8) return showErr(errEl,'Mot de passe trop court (min. 8 caractères).');
+  if (pass !== pass2) return showErr(errEl,'Les mots de passe ne correspondent pas.');
+
+  setLoading('signupBtn','signupSpin','signupTxt',true,'Création...');
+  try {
+    const data = await api('POST','/api/auth/signup',{ name, email, password: pass, role }, false);
+    if (data.success) {
+      authToken   = data.token;
+      currentUser = data.user;
+      localStorage.setItem('privydoc_token', authToken);
+      closeModal('signupModal');
+      openDashboard();
+    } else {
+      showErr(errEl, data.error || 'Erreur inscription');
+    }
+  } catch(e) { showErr(errEl,'Erreur réseau: ' + e.message); }
+  setLoading('signupBtn','signupSpin','signupTxt',false,'🚀 Créer mon compte gratuit');
+}
+
+// ══════════════════════════════════════
+// AUTH — CONNEXION
+// ══════════════════════════════════════
+async function handleLogin() {
+  const email = document.getElementById('lEmail').value.trim();
+  const pass  = document.getElementById('lPass').value;
+  const errEl = document.getElementById('loginErr');
+  errEl.style.display = 'none';
+
+  if (!email||!pass) return showErr(errEl,'Email et mot de passe requis.');
+
+  setLoading('loginBtn','loginSpin','loginTxt',true,'Connexion...');
+  try {
+    const data = await api('POST','/api/auth/login',{ email, password: pass }, false);
+    if (data.success) {
+      authToken   = data.token;
+      currentUser = data.user;
+      localStorage.setItem('privydoc_token', authToken);
+      closeModal('loginModal');
+      openDashboard();
+    } else {
+      showErr(errEl, data.error || 'Identifiants incorrects');
+    }
+  } catch(e) { showErr(errEl,'Erreur réseau: ' + e.message); }
+  setLoading('loginBtn','loginSpin','loginTxt',false,'🔐 Se connecter');
+}
+
+function handleLogout() {
+  authToken   = null;
+  currentUser = null;
+  allDocs     = [];
+  allLinks    = [];
+  localStorage.removeItem('privydoc_token');
+  closeDash();
+  updateNavForAuth(false);
+}
+
+// ══════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════
+function openDashboard() {
+  if (!currentUser) return;
+  document.getElementById('dashName').textContent = currentUser.name;
+  const planLabels = { free:'Essai Gratuit', micro:'Petit Coût', premium:'Premium' };
+  const planColors = { free:'var(--success)', micro:'var(--accent2)', premium:'var(--gold)' };
+  document.getElementById('dashPlanBadge').textContent = planLabels[currentUser.plan] || 'Gratuit';
+  document.getElementById('dashPlanBadge').style.color = planColors[currentUser.plan] || 'var(--success)';
+  document.getElementById('planLabel').textContent = planLabels[currentUser.plan] || 'Gratuit';
+  document.getElementById('planLabel').style.color = planColors[currentUser.plan] || 'var(--success)';
+  document.getElementById('planDesc').textContent =
+    currentUser.plan === 'premium' ? 'Accès complet · Documents illimités' :
+    currentUser.plan === 'micro'   ? '1 document · 2 jours' : '2 documents disponibles';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('dashPage').style.display = 'block';
+  updateNavForAuth(true);
+  loadStats();
+  loadDocs();
+  loadLinks();
+}
+
+function closeDash() {
+  document.getElementById('dashPage').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach((t,i)=>{
+    const tabs = ['overview','docs','links','upgrade'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function updateNavForAuth(loggedIn) {
+  const loginBtn  = document.getElementById('navLoginBtn');
+  const signupBtn = document.getElementById('navSignupBtn');
+  if (loggedIn) {
+    loginBtn.textContent  = '📋 Dashboard';
+    loginBtn.onclick = () => { openDashboard(); return false; };
+    signupBtn.textContent = '👤 ' + currentUser.name;
+    signupBtn.onclick = () => false;
+  } else {
+    loginBtn.textContent  = 'Connexion';
+    loginBtn.onclick = () => { openModal('loginModal'); return false; };
+    signupBtn.textContent = 'Commencer Gratuitement';
+    signupBtn.onclick = () => { openModal('signupModal'); return false; };
+  }
+}
+
+// ══════════════════════════════════════
+// STATS
+// ══════════════════════════════════════
+async function loadStats() {
+  try {
+    const data = await api('GET','/api/stats');
+    if (data.success) {
+      const s = data.stats;
+      document.getElementById('kDocs').textContent  = s.totalDocs;
+      document.getElementById('kLinks').textContent = s.activeLinks;
+      document.getElementById('kViews').textContent = s.totalViews;
+      document.getElementById('kSusp').textContent  = s.suspicious;
+      // Activité récente
+      const actEl = document.getElementById('activityList');
+      if (data.recentActivity.length === 0) {
+        actEl.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucune activité récente.</div>';
+      } else {
+        const colors = ['av-b','av-p','av-c'];
+        actEl.innerHTML = data.recentActivity.map((a,i) => `
+          <div class="act-row">
+            <div style="display:flex;align-items:center;gap:.6rem">
+              <div class="av ${colors[i%3]}">${a.recipient.substring(0,2).toUpperCase()}</div>
+              <span>${a.recipient} · ${a.views} ouvertures</span>
+            </div>
+            <span class="abadge ${a.views > 10 ? 'ab-warn' : 'ab-ok'}">${a.views > 10 ? '⚠ Suspect' : 'Normal'}</span>
+          </div>`).join('');
+      }
+    }
+  } catch(e) { console.error('Stats error:', e); }
+}
+
+// ══════════════════════════════════════
+// DOCUMENTS
+// ══════════════════════════════════════
+async function loadDocs() {
+  try {
+    const data = await api('GET','/api/documents');
+    if (data.success) {
+      allDocs = data.documents;
+      renderDocs();
+    }
+  } catch(e) { console.error('Docs error:', e); }
+}
+
+function renderDocs() {
+  const el = document.getElementById('docsList');
+  if (allDocs.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun document. Uploadez votre premier fichier.</div>';
+    return;
+  }
+  el.innerHTML = allDocs.map(d => `
+    <div class="doc-item">
+      <div class="doc-left">
+        <div class="doc-ext">${d.ext.replace('.','').toUpperCase().substring(0,3)}</div>
+        <div>
+          <div class="doc-name">${d.name}</div>
+          <div class="doc-meta">${d.size} · ${new Date(d.createdAt).toLocaleDateString('fr-FR')} · ${d.views || 0} vues</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.4rem">
+        <button class="dba dba-links" onclick="openGenLink('${d.id}')">🔗 Générer lien</button>
+        <button class="dba dba-del" onclick="deleteDoc('${d.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+async function handleFileUpload(input) {
+  if (!authToken) { alert('Connectez-vous pour uploader un document.'); return; }
+  const file = input.files[0];
+  if (!file) return;
+
+  const progEl  = document.getElementById('uploadProgress');
+  const barEl   = document.getElementById('uploadBar');
+  const statEl  = document.getElementById('uploadStatus');
+  progEl.style.display = 'block';
+  barEl.style.width    = '10%';
+  statEl.textContent   = 'Préparation...';
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    barEl.style.width  = '40%';
+    statEl.textContent = 'Upload vers Cloudinary...';
+
+    const res = await fetch('/api/documents/upload', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + authToken },
+      body: formData,
+    });
+
+    barEl.style.width  = '90%';
+    const data = await res.json();
+
+    if (data.success) {
+      barEl.style.width  = '100%';
+      barEl.style.background = 'linear-gradient(90deg,var(--success),#34D399)';
+      statEl.textContent = '✅ Upload réussi : ' + data.document.name;
+      allDocs.push(data.document);
+      renderDocs();
+      loadStats();
+      setTimeout(() => {
+        progEl.style.display = 'none';
+        barEl.style.width    = '0%';
+        barEl.style.background = 'linear-gradient(90deg,var(--accent),var(--accent3))';
+      }, 2000);
+    } else {
+      barEl.style.background = 'var(--danger)';
+      statEl.textContent = '❌ Erreur: ' + (data.error || 'Upload échoué');
+      setTimeout(() => { progEl.style.display = 'none'; barEl.style.width = '0%'; barEl.style.background = 'linear-gradient(90deg,var(--accent),var(--accent3))'; }, 3000);
+    }
+  } catch(e) {
+    barEl.style.background = 'var(--danger)';
+    statEl.textContent = '❌ Erreur réseau: ' + e.message;
+    setTimeout(() => { progEl.style.display = 'none'; }, 3000);
+  }
+  input.value = '';
+}
+
+async function deleteDoc(docId) {
+  if (!confirm('Supprimer ce document et tous ses liens ?')) return;
+  const data = await api('DELETE', '/api/documents/' + docId);
+  if (data.success) {
+    allDocs = allDocs.filter(d => d.id !== docId);
+    renderDocs();
+    loadStats();
+    loadLinks();
+  } else { alert('Erreur: ' + data.error); }
+}
+
+// ══════════════════════════════════════
+// LIENS
+// ══════════════════════════════════════
+async function loadLinks() {
+  try {
+    // Charger les liens de tous les docs
+    allLinks = [];
+    for (const doc of allDocs) {
+      const data = await api('GET', '/api/links/doc/' + doc.id);
+      if (data.success) allLinks = allLinks.concat(data.links);
+    }
+    renderLinks();
+  } catch(e) { console.error('Links error:', e); }
+}
+
+function renderLinks() {
+  const el = document.getElementById('linksList');
+  const active = allLinks.filter(l => l.active);
+  if (active.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem">Aucun lien actif. Générez des liens depuis "Mes Documents".</div>';
+    return;
+  }
+  el.innerHTML = active.map(l => `
+    <div class="link-item">
+      <div class="link-url">${l.url}</div>
+      <div class="link-meta">👤 ${l.recipientName} ${l.recipientEmail ? '· ' + l.recipientEmail : ''} · 👁️ ${l.views || 0} vues ${l.expiresAt ? '· ⏰ Expire le ' + new Date(l.expiresAt).toLocaleDateString('fr-FR') : ''}</div>
+      <div class="link-actions">
+        <button class="lba lba-copy" onclick="copyLink('${l.url}')">📋 Copier</button>
+        <button class="lba lba-rev" onclick="revokeLink('${l.id}')">🚫 Révoquer</button>
+      </div>
+    </div>`).join('');
+}
+
+function openGenLink(docId) {
+  document.getElementById('genLinkDocId').value = docId;
+  document.getElementById('glName').value  = '';
+  document.getElementById('glEmail').value = '';
+  document.getElementById('genLinkErr').style.display = 'none';
+  openModal('genLinkModal');
+}
+
+async function generateLink() {
+  const docId  = document.getElementById('genLinkDocId').value;
+  const name   = document.getElementById('glName').value.trim();
+  const email  = document.getElementById('glEmail').value.trim();
+  const maxDev = parseInt(document.getElementById('glDevices').value);
+  const expiry = parseInt(document.getElementById('glExpiry').value) || null;
+  const errEl  = document.getElementById('genLinkErr');
+  errEl.style.display = 'none';
+
+  if (!name) return showErr(errEl,'Le nom du destinataire est requis.');
+
+  setLoading('genLinkBtn','genLinkSpin','genLinkTxt',true,'Génération...');
+  try {
+    const data = await api('POST','/api/links/generate',{ docId, recipientName: name, recipientEmail: email, maxDevices: maxDev, expiresIn: expiry });
+    if (data.success) {
+      allLinks.push(data.link);
+      closeModal('genLinkModal');
+      switchTab('links');
+      renderLinks();
+      loadStats();
+      // Copier automatiquement
+      copyLink(data.link.url);
+      alert('✅ Lien généré et copié !\n' + data.link.url);
+    } else { showErr(errEl, data.error || 'Erreur'); }
+  } catch(e) { showErr(errEl, e.message); }
+  setLoading('genLinkBtn','genLinkSpin','genLinkTxt',false,'🔗 Générer le lien');
+}
+
+async function revokeLink(linkId) {
+  if (!confirm('Révoquer ce lien ? L\'accès sera immédiatement bloqué.')) return;
+  const data = await api('DELETE', '/api/links/' + linkId);
+  if (data.success) {
+    allLinks = allLinks.map(l => l.id === linkId ? {...l, active: false} : l);
+    renderLinks();
+    loadStats();
+  } else { alert('Erreur: ' + data.error); }
+}
+
+function copyLink(url) {
+  navigator.clipboard.writeText(url).then(() => {}).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+// ══════════════════════════════════════
+// PAIEMENT
+// ══════════════════════════════════════
+function openPaymentModal(plan) {
+  currentPlan = plan;
+  const p = PLANS[plan];
+  document.getElementById('ppIcon').textContent = p.icon;
+  document.getElementById('ppIcon').style.background = p.bg;
+  document.getElementById('ppName').textContent = p.name;
+  document.getElementById('ppAmount').innerHTML = p.amount.toLocaleString('fr-FR') + ' <span>FCFA</span>';
+  document.getElementById('ppDur').textContent  = p.dur;
+  document.getElementById('payErr').style.display = 'none';
+  // Pré-remplir si connecté
+  if (currentUser) {
+    const nameParts = currentUser.name.split(' ');
+    document.getElementById('pFirst').value = nameParts[0] || '';
+    document.getElementById('pLast').value  = nameParts.slice(1).join(' ') || '';
+    document.getElementById('pEmail').value = currentUser.email || '';
+  }
+  openModal('paymentModal');
+}
+
+function selPM(el, pm) {
+  document.querySelectorAll('.pm-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedPM = pm;
+}
+
+async function initiatePayment() {
+  const first = document.getElementById('pFirst').value.trim();
+  const last  = document.getElementById('pLast').value.trim();
+  const email = document.getElementById('pEmail').value.trim();
+  const phone = document.getElementById('pPhone').value.trim();
+  const errEl = document.getElementById('payErr');
+  errEl.style.display = 'none';
+
+  if (!first||!last||!email) return showErr(errEl,'Prénom, nom et email requis.');
+  if (!email.includes('@')) return showErr(errEl,'Email invalide.');
+
+  setLoading('payNowBtn','payNowSpin','payNowTxt',true,'Connexion à GeniusPay...');
+  try {
+    const data = await api('POST','/api/payment/initiate',{
+      amount: PLANS[currentPlan].amount,
+      plan: currentPlan,
+      firstName: first,
+      lastName: last,
+      email,
+      phone: phone || null,
+      paymentMethod: selectedPM,
+    }, false);
+
+    if (data.success && data.checkout_url) {
+      document.getElementById('payNowTxt').textContent = '✅ Redirection...';
+      sessionStorage.setItem('pd_ref',  data.reference);
+      sessionStorage.setItem('pd_plan', currentPlan);
+      window.location.href = data.checkout_url;
+    } else {
+      showErr(errEl, data.error || 'Erreur GeniusPay');
+      setLoading('payNowBtn','payNowSpin','payNowTxt',false,'🔒 Payer maintenant');
+    }
+  } catch(e) {
+    showErr(errEl, 'Erreur réseau: ' + e.message);
+    setLoading('payNowBtn','payNowSpin','payNowTxt',false,'🔒 Payer maintenant');
+  }
+}
+
+async function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('payment');
+  const ref    = sessionStorage.getItem('pd_ref');
+
+  if (status === 'success') {
+    document.getElementById('successPage').classList.add('show');
+    sessionStorage.removeItem('pd_ref');
+    sessionStorage.removeItem('pd_plan');
+    window.history.replaceState({}, '', '/');
+    // Recharger le profil si connecté
+    if (authToken) {
+      const d = await api('GET','/api/auth/me');
+      if (d.success) { currentUser = d.user; }
+    }
+  } else if (status === 'failed') {
+    document.getElementById('failedPage').classList.add('show');
+    window.history.replaceState({}, '', '/');
+  }
+}
+
+// ══════════════════════════════════════
+// AUTO-LOGIN AU CHARGEMENT
+// ══════════════════════════════════════
+async function autoLogin() {
+  const token = localStorage.getItem('privydoc_token');
+  if (!token) return;
+  authToken = token;
+  try {
+    const data = await api('GET','/api/auth/me');
+    if (data.success) {
+      currentUser = data.user;
+      updateNavForAuth(true);
+    } else {
+      authToken = null;
+      localStorage.removeItem('privydoc_token');
+    }
+  } catch(e) { authToken = null; }
+}
+
+// ══════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════
+function showErr(el, msg) { el.textContent = '⚠️ ' + msg; el.style.display = 'block'; }
+
+function setLoading(btnId, spinnerId, txtId, loading, txt) {
+  const btn = document.getElementById(btnId);
+  const sp  = document.getElementById(spinnerId);
+  const tx  = document.getElementById(txtId);
+  btn.disabled = loading;
+  sp.style.display  = loading ? 'inline-block' : 'none';
+  tx.textContent    = loading ? txt : tx.dataset.orig || txt;
+  if (!loading && tx.dataset.orig) tx.textContent = tx.dataset.orig;
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target===o) closeModal(o.id); });
+});
+
+function toggleMenu() {
+  document.getElementById('navMenu').classList.toggle('open');
+}
+
+function toggleFaq(el) {
+  const body = el.nextElementSibling;
+  const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
+  document.querySelectorAll('.faq-body').forEach(b => b.style.maxHeight = '0px');
+  if (!isOpen) body.style.maxHeight = '300px';
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.background =
+    window.scrollY > 50 ? 'rgba(5,8,16,0.97)' : 'rgba(5,8,16,0.8)';
+});
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', async () => {
+  await autoLogin();
+  await checkPaymentReturn();
+});
+</script>
+</body>
+</html>
